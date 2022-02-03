@@ -7,10 +7,12 @@ import com.example.testapp.domain.Repository
 class ViewModelFactory (private val repository: Repository): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(MatchesListViewModel::class.java)) {
-            MatchesListViewModel(this.repository) as T
-        } else {
-            throw IllegalArgumentException("ViewModel Not Found")
+        if (modelClass.isAssignableFrom(MatchesListViewModel::class.java)){
+            return MatchesListViewModel(repository) as T
         }
+        if (modelClass.isAssignableFrom(SplashScreenViewModel::class.java)){
+            return SplashScreenViewModel(repository) as T
+        }
+            throw IllegalAccessException("ViewModel class is not found")
     }
 }

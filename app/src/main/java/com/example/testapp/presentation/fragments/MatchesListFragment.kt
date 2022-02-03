@@ -35,14 +35,15 @@ class MatchesListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val retrofitService = RetrofitServices.getInstance()
-        val mainRepository = RepositoryImpl(retrofitService)
-        viewModel = ViewModelProvider(this, ViewModelFactory(mainRepository)).get(MatchesListViewModel::class.java)
-        viewModel.getAllMatches()
+        viewModel = ViewModelProvider(this, ViewModelFactory(RepositoryImpl)).get(MatchesListViewModel::class.java)
+        //viewModel.getAllMatches()
         setRecyclerView()
+        /*
         viewModel.matchesLiveData.observe(viewLifecycleOwner){
             matchesListAdapter.list = it.data
         }
+
+         */
     }
 
     private fun setRecyclerView(){
@@ -50,6 +51,7 @@ class MatchesListFragment: Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         matchesListAdapter = MatchesListAdapter(requireContext())
         recyclerView.adapter = matchesListAdapter
+        matchesListAdapter.list = viewModel.matchesLiveData.value!!.data
 
     }
 }

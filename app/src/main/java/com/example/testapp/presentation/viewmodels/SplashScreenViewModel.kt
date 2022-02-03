@@ -1,13 +1,11 @@
 package com.example.testapp.presentation.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.testapp.domain.Repository
-import com.example.testapp.domain.models.Matches
 import kotlinx.coroutines.*
 
-class MatchesListViewModel(private val repository: Repository): ViewModel() {
+class SplashScreenViewModel(private val repository: Repository): ViewModel() {
 
     val matchesLiveData = repository.returnMatches()
     private var job: Job? = null
