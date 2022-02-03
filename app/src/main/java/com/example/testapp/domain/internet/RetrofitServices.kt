@@ -12,7 +12,7 @@ interface RetrofitServices {
     suspend fun getLeague(): Response<League>
      */
 
-    @GET("soccer/matches?apikey=a5b72db0-8408-11ec-b4c9-396970b32d9a&season_id=496&date_from=2020-09-19")
+    @GET("soccer/matches?apikey=${API_KEY}&season_id=496&date_from=2020-09-19")
     suspend fun getMatches(): Response<Matches>
 
     companion object{

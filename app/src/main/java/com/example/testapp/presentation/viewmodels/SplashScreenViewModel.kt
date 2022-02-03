@@ -13,11 +13,12 @@ class SplashScreenViewModel(private val getAllMatchesUseCase: GetAllMatchesUseCa
 
     val onSuccess = MutableLiveData<Unit>()
     val errorMessage = MutableLiveData<String>()
-    val matchesLiveData = returnMatchesUseCase.returnMatches()
+    private val matchesLiveData = returnMatchesUseCase.returnMatches()
     private var job: Job? = null
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         ("Exception handled: ${throwable.localizedMessage}")
     }
+
 
     fun getAllMatches(){
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

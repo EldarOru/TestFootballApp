@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity(), OnFragmentsInteractionsListener {
 
     override fun onAddBackStack(name: String, fragment: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left,
+                                R.animator.enter_from_left, R.animator.exit_to_right)
             .addToBackStack(name)
             .replace(binding?.mainContainer!!.id, fragment)
             .commit()

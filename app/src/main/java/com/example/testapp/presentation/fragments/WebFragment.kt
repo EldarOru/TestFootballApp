@@ -36,6 +36,20 @@ class WebFragment: Fragment() {
             settings.setSupportZoom(true)
         }
 
+        if (savedInstanceState != null)
+            (savedInstanceState.getBundle("webViewState")?.let {
+                webFragmentBinding.webView.restoreState(
+                    it
+                )
+            })
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val bundle = Bundle()
+        webFragmentBinding.webView.saveState(bundle)
+        outState.putBundle("webViewState", bundle)
     }
 
     companion object{
