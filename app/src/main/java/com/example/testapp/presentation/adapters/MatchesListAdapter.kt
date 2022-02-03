@@ -7,9 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testapp.databinding.MatchBinding
 import com.example.testapp.domain.internet.RetrofitServices
+import com.example.testapp.domain.models.AwayTeam
+import com.example.testapp.domain.models.HomeTeam
 import com.example.testapp.domain.models.Match
 
 class MatchesListAdapter(private val context: Context): RecyclerView.Adapter<MatchesListAdapter.MatchItemViewHolder>() {
+
+    var onHomeTeamClickListener: ((HomeTeam) -> Unit)? = null
+    var onAwayTeamClickListener: ((AwayTeam) -> Unit)? = null
 
     var list = listOf<Match>()
         set(value) {
@@ -35,6 +40,13 @@ class MatchesListAdapter(private val context: Context): RecyclerView.Adapter<Mat
             venueNameTv.text = match.venue.name
             Glide.with(context).load(match.away_team.logo).into(awayTeamIv)
             Glide.with(context).load(match.home_team.logo).into(homeTeamIv)
+
+            awayTeamIv.setOnClickListener {
+                onAwayTeamClickListener!!.invoke(match.away_team)
+            }
+            homeTeamIv.setOnClickListener {
+                onHomeTeamClickListener!!.invoke(match.home_team)
+            }
         }
     }
 

@@ -7,7 +7,9 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.testapp.data.RepositoryImpl
@@ -42,9 +44,24 @@ class SplashScreenFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this, ViewModelFactory(RepositoryImpl)).get(SplashScreenViewModel::class.java)
         viewModel.getAllMatches()
-        viewModel.matchesLiveData.observe(viewLifecycleOwner){
+
+        viewModel.errorMessage.observe(viewLifecycleOwner){
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            splashScreenFragmentBinding.progressBar.visibility = ProgressBar.INVISIBLE
+            splashScreenFragmentBinding.restartButton.isEnabled = true
+            splashScreenFragmentBinding.restartButton.visibility = Button.VISIBLE
+        }
+
+        viewModel.onSuccess.observe(viewLifecycleOwner){
             splashScreenFragmentBinding.progressBar.visibility = ProgressBar.INVISIBLE
             onFragmentsInteractionsListener.onChangeFragment(MatchesListFragment())
+        }
+
+        splashScreenFragmentBinding.restartButton.setOnClickListener {
+            splashScreenFragmentBinding.progressBar.visibility = ProgressBar.VISIBLE
+            it.isEnabled = false
+            it.visibility = Button.INVISIBLE
+            viewModel.getAllMatches()
         }
     }
 

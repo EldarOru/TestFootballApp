@@ -15,13 +15,21 @@ import com.example.testapp.domain.internet.RetrofitServices
 import com.example.testapp.presentation.adapters.MatchesListAdapter
 import com.example.testapp.presentation.viewmodels.MatchesListViewModel
 import com.example.testapp.presentation.viewmodels.ViewModelFactory
+import java.lang.RuntimeException
 
 class MatchesListFragment: Fragment() {
     private lateinit var matchesListFragmentBinding:MatchesListFragmentBinding
     private lateinit var matchesListAdapter: MatchesListAdapter
     private lateinit var viewModel: MatchesListViewModel
+    private lateinit var onFragmentsInteractionsListener: OnFragmentsInteractionsListener
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        if (context is OnFragmentsInteractionsListener){
+            onFragmentsInteractionsListener = context
+        }else{
+            throw RuntimeException("Activity must implement OnFragmentsInteractionsListener")
+        }
     }
 
     override fun onCreateView(
@@ -36,14 +44,17 @@ class MatchesListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactory(RepositoryImpl)).get(MatchesListViewModel::class.java)
-        //viewModel.getAllMatches()
         setRecyclerView()
-        /*
-        viewModel.matchesLiveData.observe(viewLifecycleOwner){
-            matchesListAdapter.list = it.data
-        }
+        setClickListeners()
+    }
 
-         */
+    private fun setClickListeners(){
+        matchesListAdapter.onHomeTeamClickListener = {
+            onFragmentsInteractionsListener.onAddBackStack("team", WebFragment.newInstanceWebFragment(it.name))
+        }
+        matchesListAdapter.onAwayTeamClickListener = {
+            onFragmentsInteractionsListener.onAddBackStack("team", WebFragment.newInstanceWebFragment(it.name))
+        }
     }
 
     private fun setRecyclerView(){
