@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2C59FB">
+        android:background="#23283C">
         <TextView
             android:textStyle="bold"
             android:textSize="15sp"
@@ -59,6 +59,7 @@
             tools:text="CHECK"
             app:layout_constraintEnd_toEndOf="@id/home_team_iv"/>
         <TextView
+            android:maxLines="1"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:layout_marginEnd="10dp"
